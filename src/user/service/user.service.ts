@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 
 import { CreateUserDTO } from '../dto/request/create-user.dto';
+import { IPhoto } from '../../photo/interface/photo.interface';
 import { UpdateUserDTO } from '../dto/request/update-user.dto';
 import { User } from '../entity/user.entity';
 import { UserRepository } from '../repository/user.repository';
@@ -91,6 +92,53 @@ export class UserService {
         })
         .catch((error) => {
           this.logger.error(`Error while finding user :: ${error.message}`);
+          reject(error);
+        });
+    });
+  }
+
+  /**
+   * Service function to add photo(s) to user
+   * @param {string} userId - id of the user
+   * @param {IPhoto[]} photoDetails - details of the photo
+   */
+  addPhotos(userId: string, photoDetails: IPhoto[]): Promise<User> {
+    return new Promise((resolve, reject) => {
+      this.logger.log('Request to add photo(s)');
+      this.userRepository
+        .addPhotos(userId, photoDetails)
+        .then((updatedUser: User) => {
+          this.logger.log('Photo(s) added successfully');
+          resolve(updatedUser);
+        })
+        .catch((error) => {
+          this.logger.error(
+            `Error while adding photos to user :: ${error.message}`,
+          );
+          reject(error);
+        });
+    });
+  }
+
+  /**
+   * Service function to remove photo(s) of a user
+   * @param {string} userId - id of the user whose photos are removed
+   * @param {string[]} photoIdsToBeRemoved - id of the photos to be removed
+   * @returns {User} - updated user
+   */
+  removePhotos(userId: string, photoIdsToBeRemoved: string[]): Promise<User> {
+    return new Promise((resolve, reject) => {
+      this.logger.log('Request to remove photo(s)');
+      this.userRepository
+        .removePhotos(userId, photoIdsToBeRemoved)
+        .then((updatedUser: User) => {
+          this.logger.log('Photo(s) removed successfully');
+          resolve(updatedUser);
+        })
+        .catch((error) => {
+          this.logger.error(
+            `Error while removing photos to user :: ${error.message}`,
+          );
           reject(error);
         });
     });

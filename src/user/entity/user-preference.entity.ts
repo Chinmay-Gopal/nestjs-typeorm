@@ -1,8 +1,7 @@
-import { Column, Entity, OneToOne } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 
 import AbstractEntity from '../../common/entity/abstract.entity';
 import { Language } from '../../common/enum/language.enum';
-import { User } from './user.entity';
 
 @Entity('user-preference')
 export class UserPreference extends AbstractEntity {

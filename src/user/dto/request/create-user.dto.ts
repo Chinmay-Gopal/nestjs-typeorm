@@ -1,3 +1,4 @@
+import { IPhoto } from '../../../photo/interface/photo.interface';
 import { Language } from '../../../common/enum/language.enum';
 
 export class CreateUserDTO {
@@ -5,4 +6,5 @@ export class CreateUserDTO {
   email: string;
   language?: Language;
   secondaryEmail?: string;
+  photos?: IPhoto[];
 }

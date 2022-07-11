@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { IPhoto } from '../../photo/interface/photo.interface';
 import { CreateUserDTO } from '../dto/request/create-user.dto';
 import { UpdateUserDTO } from '../dto/request/update-user.dto';
 import { User } from '../entity/user.entity';
@@ -48,7 +49,7 @@ export class UserController {
     return new Promise((resolve, reject) => {
       this.userService
         .findUser(userId)
-        .then((createdUser: User) => resolve(createdUser))
+        .then((foundUser: User) => resolve(foundUser))
         .catch((error) =>
           reject(new InternalServerErrorException(error.message)),
         );
@@ -68,7 +69,7 @@ export class UserController {
     return new Promise((resolve, reject) => {
       this.userService
         .updateUser(userId, updateUserDetails)
-        .then((createdUser: User) => resolve(createdUser))
+        .then((updatedUser: User) => resolve(updatedUser))
         .catch((error) =>
           reject(new InternalServerErrorException(error.message)),
         );
@@ -86,6 +87,47 @@ export class UserController {
       this.userService
         .deleteUser(userId)
         .then((message: string) => resolve(message))
+        .catch((error) =>
+          reject(new InternalServerErrorException(error.message)),
+        );
+    });
+  }
+
+  /**
+   * Controller function to add photo(s) to a user
+   * @endpoint - /user/:userId/photos/add
+   * @method - PATCH
+   */
+  @Patch('/:userId/photos/add')
+  addPhotos(
+    @Param('userId') userId: string,
+    @Body('photoDetails') photoDetails: IPhoto[],
+  ): Promise<User> {
+    return new Promise((resolve, reject) => {
+      console.log('photoDetails :: ', photoDetails);
+      this.userService
+        .addPhotos(userId, photoDetails)
+        .then((updatedUser: User) => resolve(updatedUser))
+        .catch((error) =>
+          reject(new InternalServerErrorException(error.message)),
+        );
+    });
+  }
+
+  /**
+   * Controller function to remove photo(s) to a user
+   * @endpoint - /user/:userId/photos/add
+   * @method - PATCH
+   */
+  @Patch('/:userId/photos/remove')
+  removePhotos(
+    @Param('userId') userId: string,
+    @Body('photoIdsToBeRemoved') photoIdsToBeRemoved: string[],
+  ): Promise<User> {
+    return new Promise((resolve, reject) => {
+      this.userService
+        .removePhotos(userId, photoIdsToBeRemoved)
+        .then((updatedUser: User) => resolve(updatedUser))
         .catch((error) =>
           reject(new InternalServerErrorException(error.message)),
         );
