@@ -13,6 +13,7 @@ export class Photo extends AbstractEntity {
 
   @ManyToOne(() => User, (user) => user.photos, {
     orphanedRowAction: 'delete',
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'user_id' })
   user: User;

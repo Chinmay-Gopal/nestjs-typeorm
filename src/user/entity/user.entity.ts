@@ -23,6 +23,8 @@ export class User extends AbstractEntity {
   @OneToMany(() => Book, (book) => book.lentBy)
   books: Book[];
 
-  @OneToMany(() => Photo, (photo) => photo.user, { cascade: true })
+  @OneToMany(() => Photo, (photo) => photo.user, {
+    cascade: true,
+  })
   photos: Photo[];
 }
