@@ -50,7 +50,7 @@ export class UserRepository extends Repository<User> {
           resolve(createdUser);
         })
         .catch((error) => {
-          this.logger.error(`Error while creating user :: `, error);
+          this.logger.error(`Error while creating user :: ${error.message}`);
           reject(error);
         });
     });
@@ -65,7 +65,7 @@ export class UserRepository extends Repository<User> {
     this.logger.log(`Finding user (id)=(${userId})`);
     return new Promise((resolve, reject) => {
       const queryOptions: FindOneOptions = {
-        relations: ['preference', 'photos'],
+        relations: ['preference', 'photos', 'books'],
       };
 
       this.findOneOrFail(userId, queryOptions)

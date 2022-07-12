@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 
 import AbstractEntity from '../../common/entity/abstract.entity';
 import { User } from '../../user/entity/user.entity';
@@ -11,7 +11,7 @@ export class Book extends AbstractEntity {
   @Column({ nullable: false, unique: true, name: 'serial_number' })
   serialNumber: string;
 
-  @ManyToOne(() => User, (user) => user.books)
-  @JoinColumn({ name: 'lent_by' })
-  lentBy: User;
+  @ManyToMany(() => User, (user) => user.books)
+  @JoinTable({ name: 'book_authors' })
+  authors: User[];
 }
